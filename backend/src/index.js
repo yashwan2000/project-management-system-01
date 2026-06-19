@@ -19,10 +19,7 @@ const __dirname = path.dirname(__filename);
 // Serve built frontend (if exists)
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 // Fallback to index.html for client‑side routing
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) return; // let API routes handle
-  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
-});
+
 
 // Public routes
 app.use('/api/auth', authRoutes);
@@ -32,6 +29,13 @@ app.use('/api/projects', verifyToken, projectRoutes);
 app.use('/api/tasks', verifyToken, taskRoutes);
 app.use('/api/dashboard', verifyToken, dashboardRoutes);
 
+// SPA fallback for client-side routing
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) {
+    return res.status(404).json({ message: 'Not found' });
+  }
+  res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
+});
 // Global error handler
 app.use((err, req, res, next) => {
   console.error(err);
