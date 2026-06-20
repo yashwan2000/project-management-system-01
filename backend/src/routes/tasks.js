@@ -18,7 +18,7 @@ router.post(
     body('projectId').isInt().withMessage('projectId required'),
     body('title').notEmpty(),
     body('status').isIn(['todo', 'in-progress', 'done']).optional(),
-    body('dueDate').optional().isISO8601(),
+    body('dueDate').optional({ nullable: true, checkFalsy: true }).isISO8601(),
   ]),
   create
 );
@@ -30,7 +30,7 @@ router.put(
   validate([
     body('title').optional(),
     body('status').optional().isIn(['todo', 'in-progress', 'done']),
-    body('dueDate').optional().isISO8601(),
+    body('dueDate').optional({ nullable: true, checkFalsy: true }).isISO8601(),
   ]),
   update
 );
