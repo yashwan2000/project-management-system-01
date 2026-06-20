@@ -7,7 +7,10 @@ import taskRoutes from './routes/tasks.js';
 import dashboardRoutes from './routes/dashboard.js';
 import { verifyToken } from './middlewares/auth.js';
 
-dotenv.config();
+import { resolve, dirname } from 'path';
+import { fileURLToPath as _fileURLToPath } from 'url';
+const _dir = dirname(_fileURLToPath(import.meta.url));
+dotenv.config({ path: resolve(_dir, '../.env') });
 
 const app = express();
 app.use(cors());

@@ -1,10 +1,10 @@
-// taskController.js – minimal stub implementations for demo purposes
+import * as TaskModel from '../models/Task.js';
+import { db } from '../models/memoryDb.js';
 
 export const create = async (req, res, next) => {
   try {
-    // In a real app you would insert into DB; here we echo back
     const { projectId, title, status, dueDate } = req.body;
-    const task = { id: Date.now(), projectId, title, status: status || 'todo', dueDate };
+    const task = await TaskModel.createTask(projectId, title, status, dueDate);
     res.status(201).json(task);
   } catch (err) {
     next(err);
@@ -13,8 +13,15 @@ export const create = async (req, res, next) => {
 
 export const list = async (req, res, next) => {
   try {
-    // Return empty array or dummy tasks
-    res.json([]);
+    const { projectId } = req.query;
+    let tasks = [];
+    if (projectId) {
+      tasks = await TaskModel.getTasksByProject(projectId);
+    } else {
+      const userProjects = db.projects.filter(p => p.user_id === req.user.id).map(p => p.id);
+      tasks = db.tasks.filter(t => userProjects.includes(t.project_id));
+    }
+    res.json(tasks);
   } catch (err) {
     next(err);
   }
@@ -22,9 +29,9 @@ export const list = async (req, res, next) => {
 
 export const getOne = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    // Dummy task
-    res.json({ id, title: 'Demo task', status: 'todo' });
+    const task = await TaskModel.getTaskById(req.params.id);
+    if (!task) return res.status(404).json({ message: 'Task not found' });
+    res.json(task);
   } catch (err) {
     next(err);
   }
@@ -32,9 +39,9 @@ export const getOne = async (req, res, next) => {
 
 export const update = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    // In real app, update DB; here just acknowledge
-    res.json({ message: `Task ${id} updated` });
+    const affected = await TaskModel.updateTask(req.params.id, req.body);
+    if (!affected) return res.status(404).json({ message: 'Task not found' });
+    res.json({ message: 'Task updated' });
   } catch (err) {
     next(err);
   }
@@ -42,9 +49,9 @@ export const update = async (req, res, next) => {
 
 export const remove = async (req, res, next) => {
   try {
-    const { id } = req.params;
-    // In real app, delete from DB; here just acknowledge
-    res.json({ message: `Task ${id} deleted` });
+    const affected = await TaskModel.deleteTask(req.params.id);
+    if (!affected) return res.status(404).json({ message: 'Task not found' });
+    res.json({ message: 'Task deleted' });
   } catch (err) {
     next(err);
   }

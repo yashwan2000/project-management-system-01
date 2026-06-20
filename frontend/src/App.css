@@ -176,3 +176,15 @@ body {
   color: #6ee7b7; padding: 12px 20px; border-radius: 10px;
   font-size: 0.9rem; font-weight: 500; box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
+
+/* ── DASHBOARD EXTRAS ── */
+.progress-container { margin-top: 10px; }
+.progress-bar-bg { background: rgba(99,102,241,0.15); height: 6px; border-radius: 4px; width: 100%; overflow: hidden; }
+.progress-bar-fill { background: linear-gradient(90deg, #6366f1, #8b5cf6); height: 100%; transition: width 0.4s ease; border-radius: 4px; }
+.progress-text { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; display: flex; justify-content: space-between; font-weight: 500; }
+.search-input { padding: 10px 16px; border-radius: 20px; background: rgba(15,23,42,0.8); border: 1px solid rgba(99,102,241,0.4); color: #fff; outline: none; width: 100%; max-width: 400px; transition: border-color 0.2s; }
+.search-input:focus { border-color: #8b5cf6; }
+.filter-tabs { display: flex; gap: 8px; }
+.filter-tab { background: rgba(30,27,75,0.6); border: 1px solid rgba(99,102,241,0.3); padding: 7px 16px; border-radius: 20px; cursor: pointer; color: #94a3b8; font-size: 0.85rem; transition: all 0.2s; font-weight: 500; }
+.filter-tab:hover { border-color: #6366f1; color: #e2e8f0; }
+.filter-tab.active { background: #6366f1; color: #fff; border-color: #6366f1; }
