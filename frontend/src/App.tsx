@@ -32,6 +32,7 @@ function App() {
     <div className="auth-bg">
       <div className="auth-container">
         <div className="auth-logo">📋 ProjectHub</div>
+        <div className="auth-logo-sub">Professional Project Management</div>
         {screen === 'login'
           ? <Login onSuccess={handleSuccess} onSwitch={() => setScreen('register')} />
           : <Register onSuccess={handleSuccess} onSwitch={() => setScreen('login')} />
