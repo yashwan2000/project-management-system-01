@@ -1,8 +1,9 @@
-import { db } from './memoryDb.js';
+import { db, saveDb } from './memoryDb.js';
 
 export const createUser = async (email, passwordHash) => {
   const user = { id: Date.now(), email, password: passwordHash };
   db.users.push(user);
+  saveDb();
   return { id: user.id, email };
 };
 

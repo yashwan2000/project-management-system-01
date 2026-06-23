@@ -1,8 +1,9 @@
-import { db } from './memoryDb.js';
+import { db, saveDb } from './memoryDb.js';
 
 export const createProject = async (userId, name, description) => {
   const project = { id: Date.now(), user_id: userId, name, description, created_at: new Date().toISOString() };
   db.projects.push(project);
+  saveDb();
   return project;
 };
 
@@ -19,11 +20,13 @@ export const updateProject = async (projectId, userId, data) => {
   if (!p) return 0;
   if (data.name) p.name = data.name;
   if (data.description) p.description = data.description;
+  saveDb();
   return 1;
 };
 
 export const deleteProject = async (projectId, userId) => {
   const initialLen = db.projects.length;
   db.projects = db.projects.filter(p => !(p.id === Number(projectId) && p.user_id === userId));
+  saveDb();
   return initialLen - db.projects.length;
 };
